@@ -2,7 +2,7 @@ package pl.lach.model;
 
 import java.util.Objects;
 
-public class Contact {
+public class Contact implements Comparable<Contact> {
 
     private String name;
     private String phoneNumber;
@@ -51,5 +51,10 @@ public class Contact {
                 "name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Contact o) {
+        return this.getName().compareTo(o.getName());
     }
 }

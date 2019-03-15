@@ -1,7 +1,9 @@
 package pl.lach.model;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 public class PhoneBook {
@@ -13,7 +15,7 @@ public class PhoneBook {
     }
 
     public PhoneBook() {
-        this.contacts = new HashMap<>();
+        this.contacts = new TreeMap<>();
     }
 
     public Map<String, Contact> getContacts() {
@@ -21,36 +23,43 @@ public class PhoneBook {
     }
 
 
-    public void addContactToPhoneBook(Contact contact) {
-        contacts.put(contact.getName(), contact);
+    public boolean addContactToPhoneBook(Contact contact) {
+        if (contact.getName() == null || contact.getPhoneNumber() == null)
+            throw new NullPointerException("Name and phone number cannot be null");
+        if (contact.getPhoneNumber().isEmpty() || contact.getName().isEmpty())
+            throw new IllegalArgumentException("Name and phone number cannot be empty");
+        if (!contacts.containsKey(contact.getName())) {
+            contacts.put(contact.getName(), contact);
+            return true;
+        } else return false;
     }
 
-    public void removeContactFormPhoneBook(String name) {
-        contacts.remove(name);
+    public boolean removeContactFormPhoneBook(String name) {
+        return contacts.remove(name) != null;
     }
 
-    public void findContactsByName(String name) {
-        StringBuilder stringBuilder = new StringBuilder();
+    public List<Contact> findContactsByName(String name) {
+        List<Contact> result = new ArrayList<>();
         Pattern pattern = Pattern.compile(name);
 
         for (Map.Entry<String, Contact> entry : contacts.entrySet()) {
             if (pattern.matcher(entry.getKey()).find()) {
-                stringBuilder.append(String.format("%-15s %s\n", entry.getKey(), entry.getValue().getPhoneNumber()));
+                result.add(entry.getValue());
             }
         }
-        System.out.println(stringBuilder.toString());
+        return result;
     }
 
-    public void findContactByPhoneNumber(String phoneNumber) {
-        StringBuilder stringBuilder = new StringBuilder();
+    public List<Contact> findContactByPhoneNumber(String phoneNumber) {
+        List<Contact> result = new ArrayList<>();
         Pattern pattern = Pattern.compile(phoneNumber);
 
         for (Map.Entry<String, Contact> entry : contacts.entrySet()) {
             if (pattern.matcher(entry.getValue().getPhoneNumber()).find()) {
-                stringBuilder.append(String.format("%-15s %s\n", entry.getKey(), entry.getValue().getPhoneNumber()));
+                result.add(entry.getValue());
             }
         }
-        System.out.println(stringBuilder.toString());
+        return result;
     }
 
 
