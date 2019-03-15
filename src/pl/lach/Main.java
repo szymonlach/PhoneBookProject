@@ -16,7 +16,5 @@ public class Main {
         phoneBook.addContactToPhoneBook(contact3);
         phoneBook.addContactToPhoneBook(contact4);
 
-        phoneBook.findContactsByName("");
-        phoneBook.findContactByPhoneNumber("490");
     }
 }
