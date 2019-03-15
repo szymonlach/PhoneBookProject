@@ -1,5 +1,6 @@
 package pl.lach;
 
+import pl.lach.controller.PhoneBookController;
 import pl.lach.model.Contact;
 import pl.lach.model.PhoneBook;
 
@@ -15,6 +16,11 @@ public class Main {
         phoneBook.addContactToPhoneBook(contact2);
         phoneBook.addContactToPhoneBook(contact3);
         phoneBook.addContactToPhoneBook(contact4);
+
+        PhoneBookController phoneBookController = new PhoneBookController();
+
+        phoneBookController.setPhoneBook(phoneBook);
+        phoneBookController.start();
 
     }
 }
