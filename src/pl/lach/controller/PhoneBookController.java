@@ -3,6 +3,7 @@ package pl.lach.controller;
 import pl.lach.model.Contact;
 import pl.lach.model.PhoneBook;
 import pl.lach.options.ProgramOptions;
+import pl.lach.reader.ContactCsvReader;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -18,10 +19,8 @@ public class PhoneBookController {
         scanner = new Scanner(System.in);
         phoneBook = new PhoneBook();
         isRunning = true;
-    }
-
-    public void setPhoneBook(PhoneBook phoneBook) {
-        this.phoneBook = phoneBook;
+        List<Contact> contacts = ContactCsvReader.readFile();
+        contacts.forEach(contact -> phoneBook.addContactToPhoneBook(contact));
     }
 
     public void start() {
@@ -66,11 +65,16 @@ public class PhoneBookController {
                 removeContact();
                 break;
             case EXIT:
-                System.out.println("Goodbye");
-                isRunning = false;
-                scanner.close();
+                close();
                 break;
         }
+    }
+
+    private void close() {
+        System.out.println("Goodbye");
+        isRunning = false;
+        scanner.close();
+        ContactCsvReader.saveToFile(phoneBook.getContacts());
     }
 
     private void removeContact() {
